@@ -1,24 +1,27 @@
+import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
-import { ImagePlaceholder } from "./ImagePlaceholder";
 
 const hardwareItems = [
   {
     title: "Výkonné herní stanice",
     description:
       "Každá stanice zvládne i ty nejnáročnější hry bez kompromisů. AMD Ryzen 5 5800X, RTX 5070, DDR5 RAM, Full HD Res., vodní chlazení. Plynulý výkon bez lagů.",
-    imageLabel: "Herní stanice",
+    image: "/fotky/pc.jpg",
+    alt: "Herní PC stanice v Elite Arena",
   },
   {
     title: "Obraz, který tě vtáhne",
     description:
       '27" monitory, QHD rozlišení, až 280 Hz. Maximální plynulost a rychlá odezva.',
-    imageLabel: "Monitory",
+    image: "/fotky/monitor.jpg",
+    alt: "Herní monitor v Elite Arena",
   },
   {
     title: "Komfort bez kompromisů",
     description:
       "Ergonomické židle, optimalizované setupy. Hraj hodiny bez nepohodlí.",
-    imageLabel: "Komfort",
+    image: "/fotky/chair.jpg",
+    alt: "Ergonomická herní židle v Elite Arena",
   },
 ];
 
@@ -37,13 +40,19 @@ export function HardwareSection() {
           {hardwareItems.map((item) => (
             <article
               key={item.title}
-              className="group flex flex-col overflow-hidden border border-white/10 bg-bg-card/90 clip-gaming-sm transition-all hover:border-accent/40"
+              className="group flex flex-col overflow-hidden border border-white/10 bg-bg-card/90 transition-all hover:border-accent/40"
             >
-              <ImagePlaceholder
-                label={item.imageLabel}
-                aspect="video"
-                className="border-0 clip-none rounded-none"
-              />
+              <div className="relative aspect-video w-full overflow-hidden bg-black">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  fill
+                  unoptimized
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              </div>
               <div className="flex flex-1 flex-col p-6">
                 <h3 className="heading-display text-xl text-white">
                   {item.title}

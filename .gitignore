@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 /fotky/
+# Velké originály z foťáku — na webu jsou zmenšené .jpg
+public/fotky/NIK*.jpg
 *.pem
 
 # debug

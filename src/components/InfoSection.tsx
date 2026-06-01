@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
-import { ImagePlaceholder } from "./ImagePlaceholder";
 import {
   FACEIT_TOURNAMENT_LINK_LABEL,
   FACEIT_TOURNAMENT_URL,
@@ -136,7 +136,21 @@ export function InfoSection() {
             </article>
           </div>
 
-          <ImagePlaceholder label="Obrázek arény / turnaje" aspect="square" />
+          <div className="relative min-h-[320px] overflow-hidden border border-accent/25 sm:min-h-[400px] lg:min-h-[520px]">
+            <Image
+              src="/fotky/arena.jpg"
+              alt="ELITE GAME ARENA — herní aréna v Karlových Varech"
+              fill
+              unoptimized
+              className="object-cover"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+            <p className="absolute bottom-4 left-4 heading-display text-xs tracking-widest text-white/90">
+              ELITE GAME ARENA
+            </p>
+          </div>
         </div>
       </div>
     </section>
