@@ -1,17 +1,7 @@
 "use client";
 
-import {
-  FACEIT_TOURNAMENT_LINK_LABEL,
-  FACEIT_TOURNAMENT_URL,
-} from "@/lib/tournament";
-
-const STEPS = [
-  "Přihláška na webu je uložená — hotovo.",
-  "Klikni na tlačítko níže a otevři stránku turnaje na FACEIT.",
-  "Přihlas se ke svému FACEIT účtu (pokud ještě nejsi).",
-  "Na stránce turnaje klikni na Join / Přihlásit se do turnaje.",
-  "Zkontroluj, že používáš stejný FACEIT nick jako ve formuláři.",
-];
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { FACEIT_TOURNAMENT_URL } from "@/lib/tournament";
 
 type RegistrationResultModalProps = {
   phase: "loading" | "success";
@@ -22,6 +12,10 @@ export function RegistrationResultModal({
   phase,
   onClose,
 }: RegistrationResultModalProps) {
+  const { t } = useLanguage();
+  const m = t.registration.modal;
+  const faceitLabel = t.info.tournamentLink.faceitLabel;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
@@ -40,9 +34,9 @@ export function RegistrationResultModal({
               id="registration-modal-title"
               className="heading-display text-2xl text-white"
             >
-              Odesílám přihlášku…
+              {m.loadingTitle}
             </h2>
-            <p className="mt-3 text-text-muted">Chvilku strpení.</p>
+            <p className="mt-3 text-text-muted">{m.loadingHint}</p>
           </div>
         ) : (
           <>
@@ -50,18 +44,16 @@ export function RegistrationResultModal({
               id="registration-modal-title"
               className="heading-display text-2xl text-accent-bright text-glow-accent"
             >
-              Přihláška odeslána
+              {m.successTitle}
             </h2>
             <p className="mt-3 text-text-primary">
-              Ještě jeden krok —{" "}
-              <strong className="text-white">
-                přihlas se do turnaje na FACEIT
-              </strong>
-              , jinak tě neuvidíme v soupisce.
+              {m.successLead}{" "}
+              <strong className="text-white">{m.successBold}</strong>
+              {m.successTail}
             </p>
 
             <ol className="mt-6 space-y-3">
-              {STEPS.map((step, index) => (
+              {m.steps.map((step, index) => (
                 <li key={step} className="flex gap-3 text-sm text-text-muted">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-accent/40 bg-accent/10 heading-display text-xs text-accent">
                     {index + 1}
@@ -77,7 +69,7 @@ export function RegistrationResultModal({
               rel="noopener noreferrer"
               className="mt-8 flex w-full items-center justify-center gap-2 bg-accent py-4 heading-display text-lg tracking-wider text-black clip-gaming transition-colors hover:bg-accent-bright"
             >
-              {FACEIT_TOURNAMENT_LINK_LABEL}
+              {faceitLabel}
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
@@ -93,7 +85,7 @@ export function RegistrationResultModal({
               onClick={onClose}
               className="mt-4 w-full border border-white/15 py-3 text-sm text-text-muted transition-colors hover:border-accent/40 hover:text-white"
             >
-              Zavřít
+              {m.close}
             </button>
           </>
         )}

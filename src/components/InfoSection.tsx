@@ -1,9 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
-import {
-  FACEIT_TOURNAMENT_LINK_LABEL,
-  FACEIT_TOURNAMENT_URL,
-} from "@/lib/tournament";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { FACEIT_TOURNAMENT_URL } from "@/lib/tournament";
 
 type SimpleInfoItem = {
   kind: "simple";
@@ -19,42 +19,17 @@ type RulesInfoItem = {
 
 type InfoItem = SimpleInfoItem | RulesInfoItem;
 
-const infoItems: InfoItem[] = [
-  {
-    kind: "simple",
-    label: "Kdy",
-    value: "19. 6. 2026 od 18:00",
-  },
-  {
-    kind: "simple",
-    label: "Kde",
-    value: "ELITE GAME ARENA",
-    sub: "Hybešova 18, 360 05 Karlovy Vary",
-  },
-  {
-    kind: "simple",
-    label: "Vstupné",
-    value: "200 Kč na osobu",
-    sub: "Platí se až na místě",
-  },
-  {
-    kind: "simple",
-    label: "Výhra",
-    value: "1000 Kč pro vítěze",
-    sub: "Vstup 200 Kč vs výhra 1000 Kč — naprosto fair",
-  },
-  {
-    kind: "simple",
-    label: "Formát",
-    value: "CS2 1vs1 přes FACEIT",
-  },
-  {
-    kind: "rules",
-    label: "Pravidla",
-  },
-];
-
-function InfoCardContent({ item }: { item: InfoItem }) {
+function InfoCardContent({
+  item,
+  rulesLink,
+}: {
+  item: InfoItem;
+  rulesLink: {
+    title: string;
+    sub: string;
+    faceitNote: string;
+  };
+}) {
   if (item.kind === "rules") {
     return (
       <div className="mt-2 space-y-3">
@@ -63,16 +38,14 @@ function InfoCardContent({ item }: { item: InfoItem }) {
           className="group block heading-display text-xl text-white transition-colors hover:text-accent-bright"
         >
           <span className="text-accent-bright group-hover:underline">
-            Pravidla turnaje
+            {rulesLink.title}
           </span>
           <span className="mt-0.5 block text-sm font-normal normal-case tracking-normal text-text-muted">
-            Kompletní přehled níže na stránce ↓
+            {rulesLink.sub}
           </span>
         </a>
         <p className="text-sm leading-relaxed text-text-muted">
-          Kromě toho platí i{" "}
-          <span className="text-white/90">oficiální pravidla FACEIT</span> pro
-          zápasy na platformě.
+          {rulesLink.faceitNote}
         </p>
       </div>
     );
@@ -89,14 +62,41 @@ function InfoCardContent({ item }: { item: InfoItem }) {
 }
 
 export function InfoSection() {
+  const { t } = useLanguage();
+  const i = t.info;
+
+  const infoItems: InfoItem[] = [
+    { kind: "simple", label: i.when.label, value: i.when.value },
+    {
+      kind: "simple",
+      label: i.where.label,
+      value: i.where.value,
+      sub: i.where.sub,
+    },
+    {
+      kind: "simple",
+      label: i.fee.label,
+      value: i.fee.value,
+      sub: i.fee.sub,
+    },
+    {
+      kind: "simple",
+      label: i.prize.label,
+      value: i.prize.value,
+      sub: i.prize.sub,
+    },
+    { kind: "simple", label: i.format.label, value: i.format.value },
+    { kind: "rules", label: i.rules.label },
+  ];
+
   return (
     <section id="info" className="relative border-t border-accent/15 py-24">
       <div className="absolute inset-0 grid-bg opacity-40" />
       <div className="relative mx-auto max-w-7xl px-6">
         <SectionHeading
-          label="Turnaj"
-          title="Základní informace"
-          description="Vše, co potřebuješ vědět před startem duelu."
+          label={i.label}
+          title={i.title}
+          description={i.description}
         />
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -109,13 +109,13 @@ export function InfoSection() {
                 <p className="heading-display text-xs tracking-widest text-accent">
                   {item.label}
                 </p>
-                <InfoCardContent item={item} />
+                <InfoCardContent item={item} rulesLink={i.rulesLink} />
               </article>
             ))}
 
             <article className="col-span-full border border-accent/40 bg-accent/5 p-6 clip-gaming-sm sm:col-span-2">
               <p className="heading-display text-xs tracking-widest text-accent">
-                Odkaz na turnaj
+                {i.tournamentLink.label}
               </p>
               <a
                 href={FACEIT_TOURNAMENT_URL}
@@ -123,7 +123,7 @@ export function InfoSection() {
                 rel="noopener noreferrer"
                 className="heading-display mt-2 inline-flex items-center gap-2 text-2xl text-white transition-colors hover:text-accent-bright"
               >
-                {FACEIT_TOURNAMENT_LINK_LABEL}
+                {i.tournamentLink.faceitLabel}
                 <svg className="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
@@ -139,7 +139,7 @@ export function InfoSection() {
           <div className="relative min-h-[320px] overflow-hidden border border-accent/25 sm:min-h-[400px] lg:min-h-[520px]">
             <Image
               src="/fotky/arena.jpg"
-              alt="ELITE GAME ARENA — herní aréna v Karlových Varech"
+              alt={i.arenaAlt}
               fill
               unoptimized
               className="object-cover"

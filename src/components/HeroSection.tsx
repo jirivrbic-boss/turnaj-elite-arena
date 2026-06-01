@@ -1,11 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 const YOUTUBE_VIDEO_ID = "fa9fj68r0vg";
 const LOGO_SRC = "/fotky/logo elite arena.png";
 
 export function HeroSection() {
+  const { t } = useLanguage();
+
   const scrollToForm = () => {
     document.getElementById("prihlaska")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -16,7 +19,7 @@ export function HeroSection() {
         <iframe
           className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full min-w-[177.78vh] w-[177.78vh] -translate-x-1/2 -translate-y-1/2 scale-110"
           src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&start=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`}
-          title="CS2 turnaj pozadí"
+          title={t.hero.videoTitle}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           referrerPolicy="strict-origin-when-cross-origin"
         />
@@ -39,16 +42,16 @@ export function HeroSection() {
 
         <h1 className="heading-display overflow-visible text-[clamp(2.25rem,8vw,5rem)] leading-[1.1]">
           <span className="text-gradient-hero-glow">
-            <span className="text-gradient-hero">Turnaj v CS2</span>
+            <span className="text-gradient-hero">{t.hero.titleLine1}</span>
           </span>
           <br />
           <span className="inline-block px-1 text-accent text-glow-accent">
-            Elite Arena
+            {t.hero.titleLine2}
           </span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-muted md:text-xl">
-          LAN turnaj 1vs1 v CS2 se vstupem 200 Kč a možnou výhrou 1000 Kč
+          {t.hero.subtitle}
         </p>
 
         <button
@@ -57,7 +60,7 @@ export function HeroSection() {
           className="group relative mt-10 inline-block cursor-pointer border-0 bg-transparent p-0"
         >
           <span className="clip-gaming inline-block bg-accent px-10 py-4 heading-display text-lg tracking-wider text-black shadow-[0_0_30px_rgba(255,184,0,0.45)] transition-transform hover:scale-[1.02] hover:bg-accent-bright">
-            Přihlásit se do turnaje
+            {t.hero.cta}
           </span>
           <span className="absolute -inset-1 -z-10 animate-pulse-glow bg-accent/30 blur-xl" />
         </button>

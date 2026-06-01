@@ -1,50 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
-const hardwareItems = [
-  {
-    title: "Výkonné herní stanice",
-    description:
-      "Každá stanice zvládne i ty nejnáročnější hry bez kompromisů. AMD Ryzen 5 5800X, RTX 5070, DDR5 RAM, Full HD Res., vodní chlazení. Plynulý výkon bez lagů.",
-    image: "/fotky/pc.jpg",
-    alt: "Herní PC stanice v Elite Arena",
-  },
-  {
-    title: "Obraz, který tě vtáhne",
-    description:
-      '27" monitory, QHD rozlišení, až 280 Hz. Maximální plynulost a rychlá odezva.',
-    image: "/fotky/monitor.jpg",
-    alt: "Herní monitor v Elite Arena",
-  },
-  {
-    title: "Komfort bez kompromisů",
-    description:
-      "Ergonomické židle, optimalizované setupy. Hraj hodiny bez nepohodlí.",
-    image: "/fotky/chair.jpg",
-    alt: "Ergonomická herní židle v Elite Arena",
-  },
-];
+const HARDWARE_IMAGES = [
+  { image: "/fotky/pc.jpg" },
+  { image: "/fotky/monitor.jpg" },
+  { image: "/fotky/chair.jpg" },
+] as const;
 
 export function HardwareSection() {
+  const { t } = useLanguage();
+  const h = t.hardware;
+
   return (
     <section id="vybaveni" className="relative border-t border-accent/15 py-24">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.02] to-transparent" />
       <div className="relative mx-auto max-w-7xl px-6">
         <SectionHeading
-          label="Setup"
-          title="Vybavení"
-          description="Profesionální gear připravený na CS2 1vs1."
+          label={h.label}
+          title={h.title}
+          description={h.description}
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {hardwareItems.map((item) => (
+          {h.items.map((item, index) => (
             <article
               key={item.title}
               className="group flex flex-col overflow-hidden border border-white/10 bg-bg-card/90 transition-all hover:border-accent/40"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-black">
                 <Image
-                  src={item.image}
+                  src={HARDWARE_IMAGES[index].image}
                   alt={item.alt}
                   fill
                   unoptimized

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Rajdhani } from "next/font/google";
+import { CookieConsent } from "@/components/CookieConsent";
+import { LanguageProvider } from "@/i18n/LanguageProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +36,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="cs" className={`${inter.variable} ${rajdhani.variable} h-full`}>
-      <body className="min-h-full antialiased">{children}</body>
+      <body className="min-h-full antialiased">
+        <LanguageProvider>
+          {children}
+          <CookieConsent />
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

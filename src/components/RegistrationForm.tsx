@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { useLanguage } from "@/i18n/LanguageProvider";
 import { SectionHeading } from "./SectionHeading";
 import { RegistrationScrollDecor } from "./RegistrationScrollDecor";
 import { RegistrationResultModal } from "./RegistrationResultModal";
@@ -15,6 +16,9 @@ function wait(ms: number) {
 }
 
 export function RegistrationForm() {
+  const { t } = useLanguage();
+  const r = t.registration;
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [faceitNickname, setFaceitNickname] = useState("");
@@ -54,9 +58,7 @@ export function RegistrationForm() {
     } catch {
       setModalPhase(null);
       setStatus("error");
-      setErrorMessage(
-        "Odeslání se nezdařilo. Zkontroluj připojení a zkus to znovu.",
-      );
+      setErrorMessage(r.error);
     }
   };
 
@@ -70,9 +72,9 @@ export function RegistrationForm() {
 
       <div className="mx-auto max-w-2xl">
         <SectionHeading
-          label="Registrace"
-          title="Přihláška do turnaje"
-          description="Vyplň formulář — po odeslání ti ukážeme, jak se přihlásit do turnaje na FACEIT."
+          label={r.label}
+          title={r.title}
+          description={r.description}
         />
 
         <form
@@ -84,7 +86,7 @@ export function RegistrationForm() {
               htmlFor="fullName"
               className="heading-display block text-sm tracking-wider text-accent"
             >
-              Jméno a příjmení *
+              {r.fullName}
             </label>
             <input
               id="fullName"
@@ -96,7 +98,7 @@ export function RegistrationForm() {
               onChange={(e) => setFullName(e.target.value)}
               disabled={status === "loading"}
               className="mt-2 w-full border border-white/15 bg-black px-4 py-3 text-white outline-none transition-colors focus:border-accent clip-gaming-sm disabled:opacity-50"
-              placeholder="Jan Novák"
+              placeholder={r.fullNamePlaceholder}
             />
           </div>
 
@@ -105,7 +107,7 @@ export function RegistrationForm() {
               htmlFor="email"
               className="heading-display block text-sm tracking-wider text-accent"
             >
-              E-mail *
+              {r.email}
             </label>
             <input
               id="email"
@@ -116,7 +118,7 @@ export function RegistrationForm() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === "loading"}
               className="mt-2 w-full border border-white/15 bg-black px-4 py-3 text-white outline-none transition-colors focus:border-accent clip-gaming-sm disabled:opacity-50"
-              placeholder="jan@email.cz"
+              placeholder={r.emailPlaceholder}
             />
           </div>
 
@@ -125,7 +127,7 @@ export function RegistrationForm() {
               htmlFor="faceitNickname"
               className="heading-display block text-sm tracking-wider text-accent-bright"
             >
-              FACEIT nickname * (povinné)
+              {r.faceit}
             </label>
             <input
               id="faceitNickname"
@@ -137,7 +139,7 @@ export function RegistrationForm() {
               onChange={(e) => setFaceitNickname(e.target.value)}
               disabled={status === "loading"}
               className="mt-2 w-full border border-accent/40 bg-black px-4 py-3 text-white outline-none transition-colors focus:border-accent-bright focus:shadow-[0_0_12px_rgba(255,184,0,0.2)] clip-gaming-sm disabled:opacity-50"
-              placeholder="tvuj_faceit_nick"
+              placeholder={r.faceitPlaceholder}
             />
           </div>
 
@@ -152,7 +154,7 @@ export function RegistrationForm() {
             disabled={status === "loading"}
             className="w-full cursor-pointer border-0 bg-accent py-4 heading-display text-lg tracking-wider text-black shadow-[0_0_24px_rgba(255,184,0,0.35)] clip-gaming transition-all hover:bg-accent-bright hover:shadow-[0_0_32px_rgba(255,215,0,0.45)] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {status === "loading" ? "Odesílám…" : "Odeslat přihlášku"}
+            {status === "loading" ? r.submitting : r.submit}
           </button>
         </form>
       </div>

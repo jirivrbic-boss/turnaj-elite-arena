@@ -1,26 +1,23 @@
-import { SectionHeading } from "./SectionHeading";
+"use client";
 
-const rules = [
-  "K účasti je nezbytný PRIME účet.",
-  "Hráči nesmí mít na svém profilu žádný VAC, game či trade ban.",
-  "Přísný zákaz smurfingu.",
-  "Zákaz využívání chyb v mapě a provádění pixel-walků.",
-  "Všechny formy programů typu SKINCHANGER jsou přísně zakázány.",
-  "Během celého turnaje je nezbytné dodržovat pravidla fair play.",
-];
+import { SectionHeading } from "./SectionHeading";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 export function RulesSection() {
+  const { t } = useLanguage();
+  const r = t.rules;
+
   return (
     <section id="pravidla" className="border-t border-accent/15 bg-bg-card/40 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
-          label="Fair play"
-          title="Pravidla turnaje"
-          description="1vs1 formát — dodržuj pravidla, jinak diskvalifikace."
+          label={r.label}
+          title={r.title}
+          description={r.description}
         />
 
         <ul className="grid gap-4 md:grid-cols-2">
-          {rules.map((rule, index) => (
+          {r.items.map((rule, index) => (
             <li
               key={rule}
               className="flex gap-4 border border-white/10 bg-bg-elevated/80 p-5 clip-gaming-sm transition-colors hover:border-accent/40"
