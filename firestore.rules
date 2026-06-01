@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  function isValidRegistration(data) {
+    return data.keys().hasOnly([
+            'fullName',
+            'email',
+            'faceitNickname',
+            'createdAt',
+          ])
+      && data.fullName is string
+      && data.fullName.size() >= 2
+      && data.fullName.size() <= 120
+      && data.email is string
+      && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+      && data.email.size() <= 254
+      && data.faceitNickname is string
+      && data.faceitNickname.size() >= 2
+      && data.faceitNickname.size() <= 64
+      && data.createdAt is timestamp;
+  }
+
+  match /databases/{database}/documents {
+    match /registrations/{registrationId} {
+      allow read: if true;
+
+      allow create: if isValidRegistration(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isValidRegistration(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+
+      allow delete: if true;
+    }
+  }
+}
