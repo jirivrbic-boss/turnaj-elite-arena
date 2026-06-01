@@ -43,12 +43,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setLocale = useCallback((next: Locale) => {
+    if (next !== "cs" && next !== "en" && next !== "uk") return;
     setLocaleState(next);
     try {
       localStorage.setItem(LOCALE_STORAGE_KEY, next);
     } catch {
       /* ignore */
     }
+    document.documentElement.lang = next;
   }, []);
 
   const t = useMemo(() => getMessages(locale), [locale]);

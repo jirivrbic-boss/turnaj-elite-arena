@@ -1,26 +1,40 @@
 "use client";
 
-import { LOCALES } from "@/i18n/types";
+import { LOCALES, type Locale } from "@/i18n/types";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 export function LanguageSwitcher() {
   const { locale, setLocale, t } = useLanguage();
 
+  const pick = (code: Locale) => {
+    setLocale(code);
+  };
+
   return (
-    <label className="flex items-center gap-2">
-      <span className="sr-only">{t.nav.language}</span>
-      <select
-        value={locale}
-        onChange={(e) => setLocale(e.target.value as typeof locale)}
-        className="cursor-pointer border border-white/20 bg-black/60 px-2 py-1.5 heading-display text-xs tracking-wider text-text-muted outline-none transition-colors hover:border-accent/50 hover:text-accent focus:border-accent clip-gaming-sm"
-        aria-label={t.nav.language}
-      >
-        {LOCALES.map(({ code, label }) => (
-          <option key={code} value={code} title={label} className="bg-black text-white">
+    <div
+      className="flex items-stretch overflow-hidden rounded border border-white/20 bg-black/80"
+      role="group"
+      aria-label={t.nav.language}
+    >
+      {LOCALES.map(({ code, label }) => {
+        const active = locale === code;
+        return (
+          <button
+            key={code}
+            type="button"
+            onClick={() => pick(code)}
+            aria-pressed={active}
+            aria-label={label}
+            className={`min-h-11 min-w-11 touch-manipulation px-2.5 heading-display text-[11px] tracking-wider transition-colors sm:min-w-12 sm:text-xs ${
+              active
+                ? "bg-accent text-black"
+                : "text-text-muted active:bg-white/10 hover:text-accent"
+            }`}
+          >
             {code.toUpperCase()}
-          </option>
-        ))}
-      </select>
-    </label>
+          </button>
+        );
+      })}
+    </div>
   );
 }

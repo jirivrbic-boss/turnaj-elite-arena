@@ -15,7 +15,7 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-accent/20 bg-black/85 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 isolate border-b border-accent/20 bg-black/90 supports-[backdrop-filter]:bg-black/85 supports-[backdrop-filter]:backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
         <a href="#" className="heading-display shrink-0 text-lg tracking-wider text-white">
           ELITE <span className="text-accent text-glow-accent">ARENA</span>
