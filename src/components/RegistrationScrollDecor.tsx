@@ -20,11 +20,12 @@ function arcOffset(progress: number, side: "left" | "right") {
   const arcY = radius * (Math.sin(angle) + 1);
 
   const sign = side === "left" ? -1 : 1;
+  const tilt = 22 - t * 36;
 
   return {
     x: -sign * arcX * 0.75,
     y: arcY,
-    rotate: sign * (22 - t * 36),
+    rotate: -tilt,
   };
 }
 
@@ -55,7 +56,7 @@ function ScrollGrenade({ src, side, progress }: GrenadeProps) {
         width={512}
         height={512}
         unoptimized
-        className="h-auto w-full"
+        className={`h-auto w-full ${side === "right" ? "-scale-x-100" : ""}`}
         sizes="(min-width: 1536px) 256px, 208px"
       />
     </div>
